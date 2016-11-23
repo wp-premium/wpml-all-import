@@ -1,3 +1,11 @@
+#2.0.3
+
+##Fixes
+
+* Fixed PHP Fatal Error on deleting imports
+* Fixed PHP Notices when WPML wizard is not finished
+* Updated Unique Key to Unique Identifier field label
+
 #2.0.2
 
 ##Fixes

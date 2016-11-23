@@ -4,7 +4,7 @@
 	Plugin Name: WPML All Import
 	Plugin URI: http://wpml.org
 	Description: Import multilingual content to WordPress. Requires WP All Import & WPML.
-	Version: 2.0.2
+	Version: 2.0.3
 	Author: OnTheGoSystems
 	Author URI: http://www.onthegosystems.com/
 */
@@ -71,7 +71,7 @@ if ( ! class_exists('WPAI_WPML') )
 
 		private function __construct()
 		{
-			$this->wpml_addon = new RapidAddon('WPML Add-On', 'wpml_addon');
+			$this->wpml_addon = new RapidAddon('WPML All Import', 'wpml_addon');
 
 			$this->wpml_addon->set_import_function( array( &$this, 'import') );
 			$this->wpml_addon->set_post_saved_function( array( &$this, 'saved') );
@@ -89,7 +89,7 @@ if ( ! class_exists('WPAI_WPML') )
 
 			$this->wpml_addon->run($conditions);
 
-			if ( $this->wpml_addon->is_active_addon('') )
+			if ( $this->wpml_addon->is_active_addon('') && apply_filters( 'wpml_setting', false, 'setup_complete' ) )
 			{
 				global $sitepress;
 
@@ -179,7 +179,7 @@ if ( ! class_exists('WPAI_WPML') )
 											'radio',
 											$import_list
 										),
-										$this->wpml_addon->add_field('unique_key', 'Unique Key', 'text', null, 'To inform WPML that this new post is translation of another post put the same unique key like you did for post in main language.')
+										$this->wpml_addon->add_field('unique_key', 'Unique Identifier', 'text', null, 'To inform WPML that this new post is translation of another post put the same unique identifier like you did for post in main language.')
 									)
 								)
 							)
@@ -293,7 +293,7 @@ if ( ! class_exists('WPAI_WPML') )
 				$delete_sql = "DELETE FROM {$wpdb->prefix}icl_translations WHERE element_id=%d AND element_type=%s";
 				$delete_sql_prepared = $wpdb->prepare($delete_sql, $delete_args);
 				$wpdb->query( $delete_sql_prepared );
-				$this->wpml->icl_translations_cache->clear();
+				$this->wpml->get_translations_cache()->clear();
 			}
 
 		//[\actions]
