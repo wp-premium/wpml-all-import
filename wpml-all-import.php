@@ -4,7 +4,7 @@
 	Plugin Name: WPML All Import
 	Plugin URI: http://wpml.org
 	Description: Import multilingual content to WordPress. Requires WP All Import & WPML.
-	Version: 2.0.3
+	Version: 2.0.4
 	Author: OnTheGoSystems
 	Author URI: http://www.onthegosystems.com/
 */
@@ -288,7 +288,7 @@ if ( ! class_exists('WPAI_WPML') )
 			public function delete_post( $post_id )
 			{
 				global $wpdb;
-				$post_type = (in_array(get_post_type($post_id), array('product', 'product_variation'))) ? 'post_product' : 'post_' . get_post_type($post_id);
+				$post_type = 'post_' . get_post_type($post_id);
 				$delete_args = array($post_id, $post_type);
 				$delete_sql = "DELETE FROM {$wpdb->prefix}icl_translations WHERE element_id=%d AND element_type=%s";
 				$delete_sql_prepared = $wpdb->prepare($delete_sql, $delete_args);
@@ -297,6 +297,7 @@ if ( ! class_exists('WPAI_WPML') )
 			}
 
 		//[\actions]
+
 
 		/**
 		*
@@ -328,7 +329,7 @@ if ( ! class_exists('WPAI_WPML') )
 
 				if ($parent_post_id)
 				{
-					$post_type = (in_array(get_post_type($post_id), array('product', 'product_variation'))) ? 'post_product' : 'post_' . get_post_type($post_id);
+					$post_type = 'post_' . get_post_type($post_id);
 
 					$trid = $this->wpml->get_element_trid($parent_post_id, $post_type);
 
@@ -345,7 +346,7 @@ if ( ! class_exists('WPAI_WPML') )
 						}
 
 						// create a translation
-						$tid = $this->wpml->set_element_language_details($post_id, $post_type, $trid, $import->options['wpml_addon']['lng'], $parentImport->options['wpml_addon']['lng']);
+						$tid = $this->wpml->set_element_language_details($post_id, $post_type, $trid, $import->options['wpml_addon']['lng'], $parentImport->options['wpml_addon']['lng'], false);
 
 						if (is_wp_error($tid))
 						{

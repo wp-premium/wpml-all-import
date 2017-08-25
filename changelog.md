@@ -1,3 +1,9 @@
+#2.0.4
+
+##Fixes
+
+* Fixed interrupted import of variable products in secondary languages (WPMLAI-50)
+
 #2.0.3
 
 ##Fixes
