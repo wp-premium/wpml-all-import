@@ -1,3 +1,10 @@
+#2.0.5
+
+##Fixes
+
+* Fixed not setting setting _wcml_duplicate_of_variation metakey for variations (WPMLAI-68)
+
+
 #2.0.4
 
 ##Fixes
