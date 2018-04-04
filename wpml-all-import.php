@@ -4,7 +4,7 @@
 	Plugin Name: WPML All Import
 	Plugin URI: http://wpml.org
 	Description: Import multilingual content to WordPress. Requires WP All Import & WPML.
-	Version: 2.0.4
+	Version: 2.0.5
 	Author: OnTheGoSystems
 	Author URI: http://www.onthegosystems.com/
 */
@@ -277,7 +277,35 @@ if ( ! class_exists('WPAI_WPML') )
 			*/
 			public function saved_post( $post_id )
 			{
-				// TODO: for future needs
+				/*
+				set postmeta '_wcml_duplicate_of_variation' for translated product variations
+				 */
+				$post_type = get_post_type($post_id);
+				$wpml_post_type = "post_".$post_type;
+				if ('product_variation' == $post_type) {
+					$post_language = apply_filters( 'wpml_element_language_code', null,
+						array('element_id' => $post_id,
+							  'element_type' => $post_type));
+					if ($this->default_language != $post_language) {
+						$post_meta_key = '_wcml_duplicate_of_variation';
+						$current_post_meta = get_post_meta($post_id, $post_meta_key, true);
+						if (!is_numeric($current_post_meta)) {
+							$trid = apply_filters( 'wpml_element_trid', null, $post_id, $wpml_post_type);
+							if (is_numeric($trid)) {
+								$translations = apply_filters( 'wpml_get_element_translations', null, $trid, $wpml_post_type);
+								if (is_array($translations) && isset($translations[$this->default_language])) {
+									$original_post_object = $translations[$this->default_language];
+									if (isset($original_post_object->element_id)) {
+										$original_post_id = $original_post_object->element_id;
+										add_post_meta( $post_id, $post_meta_key, $original_post_id );
+									}
+								}
+							} else {
+								throw new Exception("No trid for product variation in secondary language, imposssible to set _wcml_duplicate_of_variation");
+							}
+						}
+					}
+				}
 			}
 
 			/**
