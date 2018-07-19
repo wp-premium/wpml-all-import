@@ -4,7 +4,7 @@
 	Plugin Name: WPML All Import
 	Plugin URI: http://wpml.org
 	Description: Import multilingual content to WordPress. Requires WP All Import & WPML.
-	Version: 2.0.5
+	Version: 2.0.6
 	Author: OnTheGoSystems
 	Author URI: http://www.onthegosystems.com/
 */
@@ -357,9 +357,15 @@ if ( ! class_exists('WPAI_WPML') )
 
 				if ($parent_post_id)
 				{
-					$post_type = 'post_' . get_post_type($post_id);
 
-					$trid = $this->wpml->get_element_trid($parent_post_id, $post_type);
+                    if (isset($articleData['post_type']) && "taxonomies" == $articleData['post_type'] && isset($articleData['taxonomy'])) {
+                        $post_type = 'tax_' . $articleData['taxonomy'];
+                    } else {
+                        $post_type = 'post_' . get_post_type($post_id);
+                    }
+
+
+                    $trid = $this->wpml->get_element_trid($parent_post_id, $post_type);
 
 					if ( $trid )
 					{
