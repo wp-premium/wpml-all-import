@@ -1,3 +1,8 @@
+#2.0.6
+
+* Added support for importing tags and other taxonomies (WPMLAI-67)
+* Fixed PHP notices
+
 #2.0.5
 
 ##Fixes
