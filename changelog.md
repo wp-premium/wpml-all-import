@@ -1,3 +1,7 @@
+#2.1
+
+* Updated rapid add-on framework to version 1.1.0 (wpmlai-85)
+
 #2.0.8
 
 * Fixed fatal error while importing images (wpmlai-81)
